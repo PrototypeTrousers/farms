@@ -21,16 +21,14 @@ import java.util.function.Function;
 public class MyronUnbakedModel implements UnbakedModel {
     private final Obj obj;
     private final Map<String, MyronMaterial> materials;
-    private final Collection<SpriteIdentifier> textureDependencies;
     private final SpriteIdentifier sprite;
     private final ModelTransformation transform;
     private final boolean isSideLit;
     private final boolean isBlock;
 
-    public MyronUnbakedModel(@Nullable Obj obj, @Nullable Map<String, MyronMaterial> materials, Collection<SpriteIdentifier> textureDependencies, SpriteIdentifier sprite, ModelTransformation modelTransformation, boolean isSideLit, boolean isBlock) {
+    public MyronUnbakedModel(@Nullable Obj obj, @Nullable Map<String, MyronMaterial> materials, SpriteIdentifier sprite, ModelTransformation modelTransformation, boolean isSideLit, boolean isBlock) {
         this.obj = obj;
         this.materials = materials;
-        this.textureDependencies = textureDependencies;
         this.sprite = sprite;
         this.transform = modelTransformation;
         this.isSideLit = isSideLit;

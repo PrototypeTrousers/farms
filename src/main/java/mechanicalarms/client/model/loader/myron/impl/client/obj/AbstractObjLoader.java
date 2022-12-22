@@ -48,8 +48,7 @@ public class AbstractObjLoader {
 
                 MyronMaterial material = materials.get("sprite");
                 return new MyronUnbakedModel(
-                        obj, materials,
-                        textureDependencies, materials.size() > 0
+                        obj, materials, materials.size() > 0
                         ? new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, (material == null
                         ? materials.values().iterator().next()
                         : material).getTexture())

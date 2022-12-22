@@ -1,4 +1,6 @@
 # Made in Blockbench 4.2.5
 newmtl none
-map_Kd mechanicalarms:blocks/arm_basic
-texture minecraft:block/smooth_stone
+Ka 0.000000 0.000000 0.000000
+Kd 0.8 0.8 0.8
+d 1
+map_Kd mechanicalarms:block/arm_basic
