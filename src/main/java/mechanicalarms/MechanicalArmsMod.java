@@ -1,10 +1,12 @@
 package mechanicalarms;
 
+import mechanicalarms.common.block.BlockArm;
+import mechanicalarms.common.tile.BlockEntityArm;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
-import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
+import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
 import net.minecraft.block.Block;
-import net.minecraft.block.Material;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.BlockItem;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
@@ -19,7 +21,12 @@ public class MechanicalArmsMod implements ModInitializer {
 	public static final Logger LOGGER = LoggerFactory.getLogger("modid");
 
 	// an instance of our new item
-	public static final Block EXAMPLE_BLOCK = new Block(FabricBlockSettings.of(Material.METAL).strength(4.0f));
+	public static final Block BLOCK_ARM = new BlockArm();
+	public static final BlockEntityType<BlockEntityArm> ARM_BLOCK_ENTITY = Registry.register(
+			Registries.BLOCK_ENTITY_TYPE,
+			new Identifier("mechanicalarms", "arm_basic_entity"),
+			FabricBlockEntityTypeBuilder.create(BlockEntityArm::new, BLOCK_ARM).build()
+	);
 
 	@Override
 	public void onInitialize() {
@@ -28,7 +35,7 @@ public class MechanicalArmsMod implements ModInitializer {
 		// Proceed with mild caution.
 
 		LOGGER.info("Hello Fabric world!");
-		Registry.register(Registries.BLOCK, new Identifier("mechanicalarms", "arm_basic"), EXAMPLE_BLOCK);
-		Registry.register(Registries.ITEM, new Identifier("mechanicalarms", "arm_basic"), new BlockItem(EXAMPLE_BLOCK, new FabricItemSettings()));
+		Registry.register(Registries.BLOCK, new Identifier("mechanicalarms", "arm_basic"), BLOCK_ARM);
+		Registry.register(Registries.ITEM, new Identifier("mechanicalarms", "arm_basic"), new BlockItem(BLOCK_ARM, new FabricItemSettings()));
 	}
 }
