@@ -16,7 +16,11 @@ repositories {
 	// Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
-	maven {url = "https://hephaestus.dev/release/"}
+	maven { url = "https://hephaestus.dev/release/" }
+	maven { url = "https://jitpack.io" }
+	maven {
+		url 'https://maven.parchmentmc.org/'
+	}
 }
 
 dependencies {
@@ -32,8 +36,8 @@ dependencies {
 	// These are included in the Fabric API production distribution and allow you to update your mod to the latest modules at a later more convenient time.
 
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
-
 	implementation("de.javagl:obj:0.3.0")
+	modImplementation(files("libs/flywheel-fabric-1.19.3-0.6.9.jar"))
 }
 
 processResources {
