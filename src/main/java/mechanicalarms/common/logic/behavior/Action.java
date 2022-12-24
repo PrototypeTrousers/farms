@@ -3,5 +3,6 @@ package mechanicalarms.common.logic.behavior;
 public enum Action {
     RETRIEVE,
     DELIVER,
-    IDLING
+    IDLING,
+    USE_ON
 }

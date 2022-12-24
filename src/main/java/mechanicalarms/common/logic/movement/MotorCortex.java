@@ -3,10 +3,8 @@ package mechanicalarms.common.logic.movement;
 import mechanicalarms.common.logic.behavior.ActionResult;
 import mechanicalarms.common.logic.behavior.InteractionType;
 import mechanicalarms.common.tile.BlockEntityArm;
-import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtFloat;
 import net.minecraft.nbt.NbtList;
-import net.minecraft.nbt.NbtTypes;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
@@ -291,5 +289,9 @@ public class MotorCortex {
         for (int i = 0; i < rotation.length; i++) {
             System.arraycopy(rotation[i], 0, animationRotation[i], 0, animationRotation.length);
         }
+    }
+
+    public InteractionType getInteractionType() {
+        return interactionType;
     }
 }

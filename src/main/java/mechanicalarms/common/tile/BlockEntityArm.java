@@ -11,13 +11,16 @@ import mechanicalarms.common.logic.movement.MotorCortex;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
@@ -25,8 +28,9 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
-import static mechanicalarms.common.logic.behavior.Action.DELIVER;
-import static mechanicalarms.common.logic.behavior.Action.RETRIEVE;
+import java.util.List;
+
+import static mechanicalarms.common.logic.behavior.Action.*;
 
 
 public class BlockEntityArm extends BlockEntity{
@@ -37,7 +41,7 @@ public class BlockEntityArm extends BlockEntity{
 
     public BlockEntityArm(BlockPos pos, BlockState blockState) {
         super(MechanicalArmsMod.ARM_BLOCK_ENTITY, pos, blockState);
-        motorCortex = new MotorCortex(this, 4, InteractionType.BLOCK);
+        motorCortex = new MotorCortex(this, 4, InteractionType.ENTITY);
         targeting.setSource(this.getPos().east(3), Direction.SOUTH);
         targeting.setTarget(this.getPos().west(3), Direction.NORTH);
     }
@@ -120,36 +124,48 @@ public class BlockEntityArm extends BlockEntity{
     }
 
     void update() {
-        if (workStatus.getType() == ActionTypes.IDLING) {
-            if (hasInput() && hasOutput()) {
-                updateWorkStatus(ActionTypes.MOVEMENT, RETRIEVE);
+        switch (motorCortex.getInteractionType()) {
+            case BLOCK -> {
+                if (workStatus.getType() == ActionTypes.IDLING) {
+                    if (hasInput() && hasOutput()) {
+                        updateWorkStatus(ActionTypes.MOVEMENT, RETRIEVE);
+                    }
+                } else if (workStatus.getType() == ActionTypes.MOVEMENT) {
+                    if (workStatus.getAction() == Action.RETRIEVE) {
+                        ActionResult result = motorCortex.move(armPoint, targeting.getSourceVec(), targeting.getSourceFacing());
+                        if (result == ActionResult.SUCCESS) {
+                            updateWorkStatus(ActionTypes.INTERACTION, RETRIEVE);
+                        }
+                    } else if (workStatus.getAction() == DELIVER) {
+                        ActionResult result = motorCortex.move(armPoint, targeting.getTargetVec(), targeting.getTargetFacing());
+                        if (result == ActionResult.SUCCESS) {
+                            updateWorkStatus(ActionTypes.INTERACTION, DELIVER);
+                        }
+                    }
+                } else if (workStatus.getType() == ActionTypes.INTERACTION) {
+                    if (workStatus.getAction() == Action.RETRIEVE) {
+                        ActionResult result = interact(RETRIEVE, targeting.getSource());
+                        if (result == ActionResult.SUCCESS) {
+                            updateWorkStatus(ActionTypes.MOVEMENT, DELIVER);
+                        }
+                    } else if (workStatus.getAction() == DELIVER) {
+                        ActionResult result = interact(DELIVER, targeting.getTarget());
+                        if (result == ActionResult.SUCCESS) {
+                            updateWorkStatus(ActionTypes.MOVEMENT, RETRIEVE);
+                        }
+                    }
+                }
             }
-        } else if (workStatus.getType() == ActionTypes.MOVEMENT) {
-            if (workStatus.getAction() == Action.RETRIEVE) {
-                ActionResult result = motorCortex.move(armPoint, targeting.getSourceVec(), targeting.getSourceFacing());
-                if (result == ActionResult.SUCCESS) {
-                    updateWorkStatus(ActionTypes.INTERACTION, RETRIEVE);
+            case ENTITY -> {
+                List<Entity> entities = this.getWorld().getNonSpectatingEntities(Entity.class, new Box(this.pos.east(2).south(2).up(6), this.pos.north(2).west(2).down()));
+                if (!entities.isEmpty()) {
+                    targeting.setTarget(entities.get(0).getBlockPos(), Direction.UP);
                 }
-            } else if (workStatus.getAction() == DELIVER) {
-                ActionResult result = motorCortex.move(armPoint, targeting.getTargetVec(), targeting.getTargetFacing());
-                if (result == ActionResult.SUCCESS) {
-                    updateWorkStatus(ActionTypes.INTERACTION, DELIVER);
-                }
-            }
-        } else if (workStatus.getType() == ActionTypes.INTERACTION) {
-            if (workStatus.getAction() == Action.RETRIEVE) {
-                ActionResult result = interact(RETRIEVE, targeting.getSource());
-                if (result == ActionResult.SUCCESS) {
-                    updateWorkStatus(ActionTypes.MOVEMENT, DELIVER);
-                }
-            } else if (workStatus.getAction() == DELIVER) {
-                ActionResult result = interact(DELIVER, targeting.getTarget());
-                if (result == ActionResult.SUCCESS) {
-                    updateWorkStatus(ActionTypes.MOVEMENT, RETRIEVE);
+                    ActionResult result = motorCortex.move(armPoint, targeting.getTargetVec(), targeting.getTargetFacing());
                 }
             }
         }
-    }
+
 
     public static void tick(World world, BlockPos pos, BlockState state, BlockEntityArm be) {
         be.update();
