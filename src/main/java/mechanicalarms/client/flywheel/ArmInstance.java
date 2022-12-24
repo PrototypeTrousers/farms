@@ -119,11 +119,16 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
         ts.pushPose();
         ts.translate(0, 3 / 16F, -(1 + 13 / 16F)).
                 translate(0.5F, 1 + 5 / 16F, 0.5F)
-                .rotateYRadians(lerp(handRotationAnimationAngle[1], handRotation[1], AnimationTickHolder.getPartialTicks()))
                 .rotateXRadians(lerp(handRotationAnimationAngle[0], handRotation[0], AnimationTickHolder.getPartialTicks()))
+                .rotateYRadians(lerp(handRotationAnimationAngle[1], handRotation[1], AnimationTickHolder.getPartialTicks()))
                 .translateBack(0.5F, 1 + 5 / 16F, 0.5F);
         hand.setTransform((MatrixStack) ts);
 
+        ts.pushPose();
+        ts.translate(0, 2 / 16F, -0.5F);
+        claw.setTransform((MatrixStack) ts);
+
+        ts.popPose();
         ts.popPose();
         ts.popPose();
         ts.popPose();
@@ -131,6 +136,8 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
         arm.translate(-0.5, -0.5, -0.5);
         arm2.translate(-0.5, -0.5, -0.5);
         hand.translate(-0.5, -0.5, -0.5);
+        claw.translate(-0.5, -0.5, -0.5);
+
     }
 
     private float lerp(float previous, float current, float partialTick) {

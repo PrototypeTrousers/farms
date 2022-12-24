@@ -38,8 +38,8 @@ public class BlockEntityArm extends BlockEntity{
     public BlockEntityArm(BlockPos pos, BlockState blockState) {
         super(MechanicalArmsMod.ARM_BLOCK_ENTITY, pos, blockState);
         motorCortex = new MotorCortex(this, 4, InteractionType.BLOCK);
-        targeting.setSource(this.getPos().east(3), Direction.UP);
-        targeting.setTarget(this.getPos().west(3), Direction.UP);
+        targeting.setSource(this.getPos().east(3), Direction.SOUTH);
+        targeting.setTarget(this.getPos().west(3), Direction.NORTH);
     }
 
     public float[] getAnimationRotation(int idx) {
