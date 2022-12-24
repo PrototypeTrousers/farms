@@ -29,7 +29,7 @@ import static mechanicalarms.common.logic.behavior.Action.DELIVER;
 import static mechanicalarms.common.logic.behavior.Action.RETRIEVE;
 
 
-public class BlockEntityArm extends BlockEntity implements BlockEntityProvider {
+public class BlockEntityArm extends BlockEntity{
     private final Targeting targeting = new Targeting();
     private final MotorCortex motorCortex;
     private final WorkStatus workStatus = new WorkStatus();
@@ -38,6 +38,8 @@ public class BlockEntityArm extends BlockEntity implements BlockEntityProvider {
     public BlockEntityArm(BlockPos pos, BlockState blockState) {
         super(MechanicalArmsMod.ARM_BLOCK_ENTITY, pos, blockState);
         motorCortex = new MotorCortex(this, 4, InteractionType.BLOCK);
+        targeting.setSource(this.getPos().east(3), Direction.UP);
+        targeting.setTarget(this.getPos().west(3), Direction.UP);
     }
 
     public float[] getAnimationRotation(int idx) {
@@ -46,11 +48,6 @@ public class BlockEntityArm extends BlockEntity implements BlockEntityProvider {
 
     public float[] getRotation(int idx) {
         return motorCortex.getRotation(idx);
-    }
-
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityArm(pos, state);
     }
 
     @Override
@@ -119,7 +116,7 @@ public class BlockEntityArm extends BlockEntity implements BlockEntityProvider {
             }
         }
          */
-        return ActionResult.CONTINUE;
+        return ActionResult.SUCCESS;
     }
 
     void update() {

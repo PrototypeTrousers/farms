@@ -19,6 +19,7 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.ModelBakeSettings;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
@@ -49,6 +50,7 @@ public class Myron implements ClientModInitializer {
     public static final String MOD_ID = "myron";
     public static final Logger LOGGER = LogManager.getLogger("Myron");
     public static final Map<Identifier, Mesh> MESHES = new HashMap<>();
+    public static final Map<Identifier, BakedModel> BAKED_MODEL_MAP = new HashMap<>();
     private final static Vector3f NONE = new Vector3f();
     private final static Vector3f BLOCKS = new Vector3f(0.5F, 0.5F, 0.5F);
 

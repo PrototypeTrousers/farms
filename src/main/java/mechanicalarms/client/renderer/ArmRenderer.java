@@ -28,15 +28,6 @@ public class ArmRenderer implements BlockEntityRenderer<BlockEntityArm> {
     }
     @Override
     public void render(BlockEntityArm entity, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, int overlay) {
-        matrices.push();
-        BakedModel model = ctx.getRenderManager().getModel(entity.getCachedState());
-        var quads = model.getQuads(entity.getCachedState(), Direction.UP, random);
-        for (int i = 0; i < quads.size(); i++) {
-            BakedQuad q = quads.get(i);
-
-
-            vertexConsumers.getBuffer(RenderLayer.getSolid()).quad(matrices.peek(), q, 255, 255, 255, light, overlay);
-        }
-        matrices.pop();
+        return;
     }
 }

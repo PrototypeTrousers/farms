@@ -58,7 +58,8 @@ public class MyronUnbakedModel implements UnbakedModel {
             mesh = Myron.build(obj, materials, textureGetter, bakeSettings, isBlock);
 
         Myron.MESHES.put(modelId, mesh);
-
-        return new MyronBakedModel(mesh, this.transform, textureGetter.apply(this.sprite), this.isSideLit);
+        MyronBakedModel bakedModel = new MyronBakedModel(mesh, this.transform, textureGetter.apply(this.sprite), this.isSideLit);
+        Myron.BAKED_MODEL_MAP.put(modelId, bakedModel);
+        return bakedModel;
     }
 }
