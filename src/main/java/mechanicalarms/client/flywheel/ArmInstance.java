@@ -103,6 +103,7 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
 
         ts.translate(getInstancePosition())
                 .translate(.5F, 1 + 7 / 16F, .5F)
+                .rotateYRadians(-Math.PI/2)
                 .rotateYRadians(lerp(firstArmAnimationAngle[1], firstArmRotation[1], AnimationTickHolder.getPartialTicks()))
                 .rotateXRadians(lerp(firstArmAnimationAngle[0], firstArmRotation[0], AnimationTickHolder.getPartialTicks()))
                 .translateBack(.5F, 1 + 7 / 16F, .5F);

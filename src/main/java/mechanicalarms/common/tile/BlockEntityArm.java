@@ -41,9 +41,7 @@ public class BlockEntityArm extends BlockEntity{
 
     public BlockEntityArm(BlockPos pos, BlockState blockState) {
         super(MechanicalArmsMod.ARM_BLOCK_ENTITY, pos, blockState);
-        motorCortex = new MotorCortex(this, 4, InteractionType.ENTITY);
-        targeting.setSource(this.getPos().east(3), Direction.SOUTH);
-        targeting.setTarget(this.getPos().west(3), Direction.NORTH);
+        motorCortex = new MotorCortex(this, 2, InteractionType.ENTITY);
     }
 
     public float[] getAnimationRotation(int idx) {
@@ -157,7 +155,7 @@ public class BlockEntityArm extends BlockEntity{
                 }
             }
             case ENTITY -> {
-                List<Entity> entities = this.getWorld().getNonSpectatingEntities(Entity.class, new Box(this.pos.east(2).south(2).up(6), this.pos.north(2).west(2).down()));
+                List<Entity> entities = this.getWorld().getNonSpectatingEntities(Entity.class, new Box(this.pos.east(5).south(5).up(5), this.pos.north(5).west(5).down(3)));
                 if (!entities.isEmpty()) {
                     targeting.setTarget(entities.get(0).getBlockPos(), Direction.UP);
                 }
