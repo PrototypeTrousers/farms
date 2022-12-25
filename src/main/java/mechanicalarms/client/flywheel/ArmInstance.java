@@ -43,7 +43,7 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
 
     @Override
     public void updateLight() {
-        relight(getInstancePosition().up(), arm, arm2, hand, claw);
+        relight(getWorldPosition().up(), arm, arm2, hand, claw);
     }
 
     private ModelData armModelData() {
@@ -118,7 +118,7 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
         arm2.setTransform((MatrixStack) ts);
 
         ts.pushPose();
-        ts.translate(0, 3 / 16F, -(1 + 13 / 16F)).
+        ts.translate(0, 0, -(1 + 13 / 16F)).
                 translate(0.5F, 1 + 5 / 16F, 0.5F)
                 .rotateXRadians(lerp(handRotationAnimationAngle[0], handRotation[0], AnimationTickHolder.getPartialTicks()))
                 .rotateYRadians(lerp(handRotationAnimationAngle[1], handRotation[1], AnimationTickHolder.getPartialTicks()))
@@ -142,6 +142,12 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
     }
 
     private float lerp(float previous, float current, float partialTick) {
+        var diff = Math.abs(previous) - Math.abs(current);
+        if (diff > Math.PI) {
+         previous = 0;
+        } else if (diff < -Math.PI) {
+            current = 0;
+        }
         return (previous * (1.0F - partialTick)) + (current * partialTick);
     }
 }

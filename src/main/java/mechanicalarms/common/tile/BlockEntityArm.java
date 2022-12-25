@@ -155,7 +155,7 @@ public class BlockEntityArm extends BlockEntity{
                 }
             }
             case ENTITY -> {
-                List<Entity> entities = this.getWorld().getNonSpectatingEntities(Entity.class, new Box(this.pos.east(5).south(5).up(5), this.pos.north(5).west(5).down(3)));
+                List<Entity> entities = this.getWorld().getNonSpectatingEntities(Entity.class, new Box(this.pos.east(4).south(4).up(4), this.pos.north(4).west(4).down(3)));
                 if (!entities.isEmpty()) {
                     targeting.setTarget(entities.get(0).getBlockPos(), Direction.UP);
                 }
