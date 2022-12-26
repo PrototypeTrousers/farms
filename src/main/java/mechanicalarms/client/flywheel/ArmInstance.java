@@ -1,6 +1,5 @@
 package mechanicalarms.client.flywheel;
 
-
 import com.jozufozu.flywheel.api.MaterialManager;
 import com.jozufozu.flywheel.api.instance.DynamicInstance;
 import com.jozufozu.flywheel.backend.instancing.blockentity.BlockEntityInstance;
@@ -103,7 +102,7 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
 
         ts.translate(getInstancePosition())
                 .translate(.5F, 1 + 7 / 16F, .5F)
-                .rotateYRadians(-Math.PI/2)
+                .rotateYRadians(-Math.PI / 2)
                 .rotateYRadians(lerp(firstArmAnimationAngle[1], firstArmRotation[1], AnimationTickHolder.getPartialTicks()))
                 .rotateXRadians(lerp(firstArmAnimationAngle[0], firstArmRotation[0], AnimationTickHolder.getPartialTicks()))
                 .translateBack(.5F, 1 + 7 / 16F, .5F);
@@ -144,7 +143,7 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
     private float lerp(float previous, float current, float partialTick) {
         var diff = Math.abs(previous) - Math.abs(current);
         if (diff > Math.PI) {
-         previous = 0;
+            previous = 0;
         } else if (diff < -Math.PI) {
             current = 0;
         }
