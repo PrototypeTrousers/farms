@@ -118,7 +118,7 @@ public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements 
 
         ts.pushPose();
         ts.translate(0, 0, -(1 + 13 / 16F)).
-                translate(0.5F, 1 + 5 / 16F, 0.5F)
+                translate(0.5F, 1 + 8 / 16F, 0.5F)
                 .rotateXRadians(lerp(handRotationAnimationAngle[0], handRotation[0], AnimationTickHolder.getPartialTicks()))
                 .rotateYRadians(lerp(handRotationAnimationAngle[1], handRotation[1], AnimationTickHolder.getPartialTicks()))
                 .translateBack(0.5F, 1 + 5 / 16F, 0.5F);

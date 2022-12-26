@@ -130,6 +130,7 @@ public class BlockEntityArm extends BlockEntity{
     }
 
     void update() {
+        //if (world.isClient) return;
         switch (motorCortex.getInteractionType()) {
             case BLOCK -> {
                 if (workStatus.getType() == ActionTypes.IDLING) {

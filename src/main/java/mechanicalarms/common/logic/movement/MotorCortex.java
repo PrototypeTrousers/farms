@@ -51,7 +51,7 @@ public class MotorCortex {
         boolean distReached = false;
 
         animationRotation[1][0] = rotation[1][0];
-        rotation[1][0] = (rotateShortest(rotation[1][0], 0.2f, armArcTarget));
+        rotation[1][0] = (rotateShortest(rotation[1][0], 0.15f, armArcTarget));
         if (rotation[1][0] == armArcTarget) {
             if (extraPitchArc != 0) {
                 distReached = true;
@@ -61,11 +61,11 @@ public class MotorCortex {
         }
 
         animationRotation[0][0] = rotation[0][0];
-        rotation[0][0] = rotateShortest(rotation[0][0], 0.2f, pitch);
+        rotation[0][0] = rotateShortest(rotation[0][0], 0.15f, pitch);
         boolean pitchReached = rotation[0][0] == pitch;
 
         animationRotation[0][1] = rotation[0][1];
-        rotation[0][1] = rotateShortest(rotation[0][1], 0.2f, yaw);
+        rotation[0][1] = rotateShortest(rotation[0][1], 0.15f, yaw);
         float yawDiff = (Math.abs(rotation[0][1]) - Math.abs(animationRotation[0][1]));
         boolean yawReached = (yawDiff < 0.01 && yawDiff > -0.01);
 
@@ -173,11 +173,11 @@ public class MotorCortex {
                 }
             }
 
-            rotation[2][1] = rotateShortest(rotation[2][1], 0.2f, targetHandYaw);
+            rotation[2][1] = rotateShortest(rotation[2][1], 0.15f, targetHandYaw);
             float yawDiffHand = (Math.abs(rotation[2][1]) - Math.abs(animationRotation[2][1]));
             boolean yawHandReached = (yawDiffHand < 0.01 && yawDiffHand > -0.01);
 
-            rotation[2][0] = rotateShortest(rotation[2][0], 0.2f, targetHandPitch);
+            rotation[2][0] = rotateShortest(rotation[2][0], 0.15f, targetHandPitch);
             float pitchDiffHand = (Math.abs(rotation[2][0]) - Math.abs(animationRotation[2][0]));
             boolean pitchHandReached = (pitchDiffHand < 0.01 && pitchDiffHand > -0.01);
 
