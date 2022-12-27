@@ -1,10 +1,6 @@
 package mechanicalarms;
 
-import de.javagl.obj.FloatTuple;
-import de.javagl.obj.Obj;
-import de.javagl.obj.ObjFace;
-import de.javagl.obj.ObjReader;
-import de.javagl.obj.ObjSplitting;
+import de.javagl.obj.*;
 import mechanicalarms.client.model.loader.myron.impl.client.model.MyronMaterial;
 import mechanicalarms.client.model.loader.myron.impl.client.obj.MaterialReader;
 import mechanicalarms.client.model.loader.myron.impl.client.obj.ObjLoader;
@@ -37,12 +33,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Function;
 
 @Environment(EnvType.CLIENT)

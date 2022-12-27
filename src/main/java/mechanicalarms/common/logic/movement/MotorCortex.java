@@ -2,18 +2,13 @@ package mechanicalarms.common.logic.movement;
 
 import mechanicalarms.common.logic.behavior.ActionResult;
 import mechanicalarms.common.logic.behavior.InteractionType;
-import mechanicalarms.common.tile.BlockEntityArm;
+import mechanicalarms.common.tile.AbstractArmEntity;
 import net.minecraft.nbt.NbtFloat;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import static net.minecraft.util.math.Direction.DOWN;
-import static net.minecraft.util.math.Direction.EAST;
-import static net.minecraft.util.math.Direction.NORTH;
-import static net.minecraft.util.math.Direction.SOUTH;
-import static net.minecraft.util.math.Direction.UP;
-import static net.minecraft.util.math.Direction.WEST;
+import static net.minecraft.util.math.Direction.*;
 
 public class MotorCortex {
 
@@ -21,11 +16,11 @@ public class MotorCortex {
     private final InteractionType interactionType;
     float[][] rotation = new float[3][3];
     float[][] animationRotation = new float[3][3];
-    BlockEntityArm te;
+    AbstractArmEntity te;
     private final static float PI = (float) Math.PI;
 
-    public MotorCortex(BlockEntityArm blockEntityArm, float armSize, InteractionType interactionType) {
-        this.te = blockEntityArm;
+    public MotorCortex(AbstractArmEntity abstractArmEntity, float armSize, InteractionType interactionType) {
+        this.te = abstractArmEntity;
         this.armSize = armSize;
         this.interactionType = interactionType;
     }

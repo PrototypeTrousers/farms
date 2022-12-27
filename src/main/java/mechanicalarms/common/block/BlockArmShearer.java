@@ -1,11 +1,9 @@
 package mechanicalarms.common.block;
 
 import mechanicalarms.MechanicalArmsMod;
-import mechanicalarms.common.tile.BlockEntityArm;
+import mechanicalarms.common.tile.ArmEntityShearer;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
-import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.Material;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
@@ -14,25 +12,18 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class BlockArm extends BlockWithEntity {
-    public BlockArm() {
+public class BlockArmShearer extends AbstractBlockArm {
+    public BlockArmShearer() {
         super(FabricBlockSettings.of(Material.METAL).strength(4.0f));
     }
 
     @Override
-    public BlockRenderType getRenderType(BlockState state) {
-        // With inheriting from BlockWithEntity this defaults to INVISIBLE, so we need to change that!
-        return BlockRenderType.MODEL;
-    }
-
-    @Nullable
-    @Override
-    public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
-        return new BlockEntityArm(pos, state);
+    public @Nullable BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
+        return new ArmEntityShearer(pos, state);
     }
 
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return checkType(type, MechanicalArmsMod.ARM_BLOCK_ENTITY, BlockEntityArm::tick);
+        return checkType(type, MechanicalArmsMod.ARM_SHEARER_ENTITY, ArmEntityShearer::tick);
     }
 }

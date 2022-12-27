@@ -11,19 +11,19 @@ import com.jozufozu.flywheel.core.model.Model;
 import com.jozufozu.flywheel.util.AnimationTickHolder;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import mechanicalarms.Myron;
-import mechanicalarms.common.tile.BlockEntityArm;
+import mechanicalarms.common.tile.AbstractArmEntity;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
-public class ArmInstance extends BlockEntityInstance<BlockEntityArm> implements DynamicInstance {
+public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractArmEntity> implements DynamicInstance {
     private final ModelData arm = armModelData();
     private final ModelData arm2 = armModelData();
     private final ModelData hand = armHandData();
     private final ModelData claw = armClawData();
 
-    public ArmInstance(MaterialManager materialManager, BlockEntityArm blockEntity) {
+    public AbstractArmInstance(MaterialManager materialManager, AbstractArmEntity blockEntity) {
         super(materialManager, blockEntity);
     }
 

@@ -1,55 +1,46 @@
 package mechanicalarms.common.tile;
 
 import mechanicalarms.MechanicalArmsMod;
-import mechanicalarms.common.logic.behavior.Action;
-import mechanicalarms.common.logic.behavior.ActionResult;
-import mechanicalarms.common.logic.behavior.ActionTypes;
-import mechanicalarms.common.logic.behavior.InteractionType;
-import mechanicalarms.common.logic.behavior.Targeting;
-import mechanicalarms.common.logic.behavior.WorkStatus;
+import mechanicalarms.common.logic.behavior.*;
 import mechanicalarms.common.logic.movement.MotorCortex;
 import mechanicalarms.fakeplayer.FakePlayer;
-import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.passive.SheepEntity;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.item.ShearsItem;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.network.Packet;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.World;
 import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-import static mechanicalarms.common.logic.behavior.Action.*;
+import static mechanicalarms.common.logic.behavior.Action.DELIVER;
+import static mechanicalarms.common.logic.behavior.Action.RETRIEVE;
 import static mechanicalarms.fakeplayer.FakePlayer.fakePlayer;
 
 
-public class BlockEntityArm extends BlockEntity{
+public abstract class AbstractArmEntity extends BlockEntity {
     private final Targeting targeting = new Targeting();
     private final MotorCortex motorCortex;
     private final WorkStatus workStatus = new WorkStatus();
     private Vec3d armPoint;
 
-    public BlockEntityArm(BlockPos pos, BlockState blockState) {
-        super(MechanicalArmsMod.ARM_BLOCK_ENTITY, pos, blockState);
-        motorCortex = new MotorCortex(this, 2, InteractionType.ENTITY);
+    protected AbstractArmEntity(BlockEntityType<?> blockEntityType, BlockPos pos, BlockState blockState, InteractionType interactionType) {
+        super(blockEntityType, pos, blockState);
+        motorCortex = new MotorCortex(this, 2, interactionType);
     }
 
     public float[] getAnimationRotation(int idx) {
@@ -168,7 +159,7 @@ public class BlockEntityArm extends BlockEntity{
                 if (!entities.isEmpty()) {
                     targeting.setTarget(entities.get(0).getBlockPos(), Direction.UP);
                 }
-                    ActionResult result = motorCortex.move(armPoint, targeting.getTargetVec(), targeting.getTargetFacing());
+                ActionResult result = motorCortex.move(armPoint, targeting.getTargetVec(), targeting.getTargetFacing());
                 if (result == ActionResult.SUCCESS) {
                     if (!entities.isEmpty()) {
                         if (entities.get(0) instanceof SheepEntity) {
@@ -177,12 +168,13 @@ public class BlockEntityArm extends BlockEntity{
                         }
                     }
                 }
-                }
+
             }
         }
+    }
 
 
-    public static void tick(World world, BlockPos pos, BlockState state, BlockEntityArm be) {
+    public static void tick(World world, BlockPos pos, BlockState state, AbstractArmEntity be) {
         be.update();
     }
 
