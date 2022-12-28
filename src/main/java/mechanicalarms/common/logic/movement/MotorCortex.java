@@ -8,7 +8,12 @@ import net.minecraft.nbt.NbtList;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 
-import static net.minecraft.util.math.Direction.*;
+import static net.minecraft.util.math.Direction.DOWN;
+import static net.minecraft.util.math.Direction.EAST;
+import static net.minecraft.util.math.Direction.NORTH;
+import static net.minecraft.util.math.Direction.SOUTH;
+import static net.minecraft.util.math.Direction.UP;
+import static net.minecraft.util.math.Direction.WEST;
 
 public class MotorCortex {
 

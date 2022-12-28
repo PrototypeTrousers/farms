@@ -7,7 +7,12 @@ import net.minecraft.util.math.Direction;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.StringTokenizer;
 
 public class MaterialReader {
     private static final Map<String, Option> OPTIONS = new HashMap<>();

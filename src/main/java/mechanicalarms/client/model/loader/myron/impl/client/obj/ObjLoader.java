@@ -1,6 +1,10 @@
 package mechanicalarms.client.model.loader.myron.impl.client.obj;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
 import mechanicalarms.Myron;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;

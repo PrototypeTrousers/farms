@@ -1,7 +1,11 @@
 package mechanicalarms.common.tile;
 
-import mechanicalarms.MechanicalArmsMod;
-import mechanicalarms.common.logic.behavior.*;
+import mechanicalarms.common.logic.behavior.Action;
+import mechanicalarms.common.logic.behavior.ActionResult;
+import mechanicalarms.common.logic.behavior.ActionTypes;
+import mechanicalarms.common.logic.behavior.InteractionType;
+import mechanicalarms.common.logic.behavior.Targeting;
+import mechanicalarms.common.logic.behavior.WorkStatus;
 import mechanicalarms.common.logic.movement.MotorCortex;
 import mechanicalarms.fakeplayer.FakePlayer;
 import net.minecraft.block.BlockState;

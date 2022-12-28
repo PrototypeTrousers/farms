@@ -1,6 +1,5 @@
 package mechanicalarms.common.tile;
 
-import mechanicalarms.MechanicalArmsMod;
 import mechanicalarms.common.logic.behavior.InteractionType;
 import net.minecraft.block.BlockState;
 import net.minecraft.util.math.BlockPos;
