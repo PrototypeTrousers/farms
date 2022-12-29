@@ -20,7 +20,7 @@ import net.minecraft.util.math.Vec3d;
 
 public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractArmEntity> implements DynamicInstance {
     private final ModelData arm = armModelData();
-    private final ModelData arm2 = armModelData();
+    private final ModelData arm2 = arm2ModelData();
     private final ModelData hand = armHandData();
     private final ModelData claw = armClawData();
 
@@ -53,6 +53,13 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
                 .createInstance();
     }
 
+    private ModelData arm2ModelData() {
+        return materialManager.solid(RenderLayer.getSolid())
+                .material(Materials.TRANSFORMED)
+                .model("arm2", this::getArm2Model)
+                .createInstance();
+    }
+
     private ModelData armHandData() {
         return materialManager.solid(RenderLayer.getSolid())
                 .material(Materials.TRANSFORMED)
@@ -71,6 +78,12 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
         MyronBakedModel bakedModel = Myron.BAKED_MODEL_MAP.get(new Identifier("mechanicalarms", "block/arm_basic.obj_arm1"));
         BakedModelBuilder modelBuilder = new BakedModelBuilder(bakedModel);
         return new BlockModel(modelBuilder.build(), "arm");
+    }
+
+    private Model getArm2Model() {
+        MyronBakedModel bakedModel = Myron.BAKED_MODEL_MAP.get(new Identifier("mechanicalarms", "block/arm_basic.obj_arm2"));
+        BakedModelBuilder modelBuilder = new BakedModelBuilder(bakedModel);
+        return new BlockModel(modelBuilder.build(), "arm2");
     }
 
     private Model getHandModel() {
@@ -99,12 +112,12 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
 
         MatrixStack matrixStack = new MatrixStack();
         TransformStack ts = TransformStack.cast(matrixStack);
-        ts.pushPose();
 
+        ts.translate(getInstancePosition());
         ts.translate(0, -0.5, 0);
 
         var arm1pivot = new Vec3d(0.5, 2, 0.5);
-        ts.translate(getInstancePosition())
+        ts
                 .translate(arm1pivot)
                 .rotateYRadians(lerp(firstArmAnimationAngle[1], firstArmRotation[1], AnimationTickHolder.getPartialTicks()))
                 .rotateZRadians(lerp(firstArmAnimationAngle[0], firstArmRotation[0], AnimationTickHolder.getPartialTicks()))
@@ -112,31 +125,24 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
         arm.setTransform((MatrixStack) ts);
 
         ts.pushPose();
+        var arm2pivot = new Vec3d(2.5, 2, 0.5);
 
-        var arm2pivot = new Vec3d(0.5, 2, 0.5);
-        ts.translate(2, 0, 0)
-                .translate(arm2pivot)
+        ts.translate(arm2pivot)
                 .rotateZRadians(lerp(secondArmAnimationAngle[0], secondArmRotation[0], AnimationTickHolder.getPartialTicks()))
                 .translateBack(arm2pivot);
-
         arm2.setTransform((MatrixStack) ts);
 
         ts.pushPose();
 
-        var hand2pivot = new Vec3d(4 + 3 / 16f, 2, 0.5);
-        ts.translate(-2, 0, 0).
-                translate(hand2pivot)
+        var hand2pivot = new Vec3d(4 + 4 / 16f, 1 + 15f/16, 0.5f);
+        ts
+                .translate(hand2pivot)
                 .rotateZRadians(lerp(handRotationAnimationAngle[0], handRotation[0], AnimationTickHolder.getPartialTicks()))
                 .rotateYRadians(lerp(handRotationAnimationAngle[1], handRotation[1], AnimationTickHolder.getPartialTicks()))
                 .translateBack(hand2pivot);
         hand.setTransform((MatrixStack) ts);
-
-        ts.pushPose();
-        ts.translate(0, 0, 0);
         claw.setTransform((MatrixStack) ts);
 
-        ts.popPose();
-        ts.popPose();
         ts.popPose();
         ts.popPose();
     }

@@ -163,15 +163,15 @@ public abstract class AbstractArmEntity extends BlockEntity {
                 if (!entities.isEmpty()) {
                     setTarget(entities.get(0).getPos(), Direction.UP);
                 }
-                if (targeting == null) {
+                if (targeting.getTargetVec() == null || targeting.getTargetFacing() == null) {
                     return;
                 }
                 ActionResult result = motorCortex.move(armPoint, targeting.getTargetVec(), targeting.getTargetFacing());
                 if (result == ActionResult.SUCCESS) {
                     if (!entities.isEmpty()) {
-                        if (entities.get(0) instanceof SheepEntity) {
+                        if (entities.get(0) instanceof SheepEntity sheep) {
                             FakePlayer.getFakePlayer(this).setStackInHand(Hand.MAIN_HAND, new ItemStack(Items.SHEARS, 1));
-                            ((SheepEntity) entities.get(0)).interactMob(fakePlayer, Hand.MAIN_HAND);
+                            sheep.interactMob(fakePlayer, Hand.MAIN_HAND);
                         }
                     }
                 }
