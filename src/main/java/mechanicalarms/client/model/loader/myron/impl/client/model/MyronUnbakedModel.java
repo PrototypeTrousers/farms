@@ -1,6 +1,7 @@
 package mechanicalarms.client.model.loader.myron.impl.client.model;
 
 import de.javagl.obj.Obj;
+import de.javagl.obj.ObjSplitting;
 import mechanicalarms.Myron;
 import net.fabricmc.fabric.api.renderer.v1.mesh.Mesh;
 import net.minecraft.client.render.model.BakedModel;
@@ -11,10 +12,12 @@ import net.minecraft.client.render.model.json.ModelTransformation;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.util.SpriteIdentifier;
 import net.minecraft.util.Identifier;
+import org.apache.commons.lang3.tuple.Pair;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -60,6 +63,13 @@ public class MyronUnbakedModel implements UnbakedModel {
         Myron.MESHES.put(modelId, mesh);
         MyronBakedModel bakedModel = new MyronBakedModel(mesh, this.transform, textureGetter.apply(this.sprite), this.isSideLit);
         Myron.BAKED_MODEL_MAP.put(modelId, bakedModel);
+
+        for (Map.Entry<String, Obj> entry : ObjSplitting.splitByGroups(obj).entrySet()) {
+            Mesh mesh2 = Myron.build(entry.getValue(), materials, textureGetter, bakeSettings, isBlock);
+            MyronBakedModel partBakedModel = new MyronBakedModel(mesh2, this.transform, textureGetter.apply(this.sprite), this.isSideLit);
+            Myron.BAKED_MODEL_MAP.put(new Identifier(modelId.getNamespace(), modelId.getPath() + "_" + entry.getKey()), partBakedModel);
+        }
+
         return bakedModel;
     }
 }

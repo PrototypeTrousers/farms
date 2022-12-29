@@ -1,0 +1,17 @@
+# Blender 3.4.0 MTL File: 'None'
+# www.blender.org
+
+newmtl Arm1
+map_Kd mechanicalarms:block/arm_arm
+
+newmtl Arm2
+map_Kd mechanicalarms:block/arm_arm
+
+newmtl Base
+map_Kd mechanicalarms:block/arm_base
+
+newmtl Claw
+map_Kd mechanicalarms:block/arm_claw
+
+newmtl Hand
+map_Kd mechanicalarms:block/arm_hand

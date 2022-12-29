@@ -11,11 +11,15 @@ import com.jozufozu.flywheel.core.model.Model;
 import com.jozufozu.flywheel.util.AnimationTickHolder;
 import com.jozufozu.flywheel.util.transform.TransformStack;
 import mechanicalarms.Myron;
+import mechanicalarms.client.model.loader.myron.impl.client.model.MyronBakedModel;
 import mechanicalarms.common.tile.AbstractArmEntity;
+import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
+import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.QuadViewImpl;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
 
 public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractArmEntity> implements DynamicInstance {
     private final ModelData arm = armModelData();
@@ -67,19 +71,19 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
     }
 
     private Model getArmModel() {
-        BakedModel bakedModel = Myron.BAKED_MODEL_MAP.get(new Identifier("mechanicalarms", "block/arm_arm"));
+        MyronBakedModel bakedModel = Myron.BAKED_MODEL_MAP.get(new Identifier("mechanicalarms", "block/arm_basic.obj_arm1"));
         BakedModelBuilder modelBuilder = new BakedModelBuilder(bakedModel);
         return new BlockModel(modelBuilder.build(), "arm");
     }
 
     private Model getHandModel() {
-        BakedModel bakedModel = Myron.BAKED_MODEL_MAP.get(new Identifier("mechanicalarms", "block/arm_hand"));
+        MyronBakedModel bakedModel = Myron.BAKED_MODEL_MAP.get(new Identifier("mechanicalarms", "block/arm_basic.obj_hand"));
         BakedModelBuilder modelBuilder = new BakedModelBuilder(bakedModel);
         return new BlockModel(modelBuilder.build(), "hand");
     }
 
     private Model getClawModel() {
-        BakedModel bakedModel = Myron.BAKED_MODEL_MAP.get(new Identifier("mechanicalarms", "block/arm_claw"));
+        MyronBakedModel bakedModel = Myron.BAKED_MODEL_MAP.get(new Identifier("mechanicalarms", "block/arm_basic.obj_claw"));
         BakedModelBuilder modelBuilder = new BakedModelBuilder(bakedModel);
         return new BlockModel(modelBuilder.build(), "claw");
     }
@@ -100,44 +104,44 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
         TransformStack ts = TransformStack.cast(matrixStack);
         ts.pushPose();
 
+        ts.translate(0,-0.5,0);
+
+        var arm1pivot = new Vec3d(0.5,2,0.5);
         ts.translate(getInstancePosition())
-                .translate(.5F, 1 + 7 / 16F, .5F)
-                .rotateYRadians(-Math.PI / 2)
+                .translate(arm1pivot)
                 .rotateYRadians(lerp(firstArmAnimationAngle[1], firstArmRotation[1], AnimationTickHolder.getPartialTicks()))
-                .rotateXRadians(lerp(firstArmAnimationAngle[0], firstArmRotation[0], AnimationTickHolder.getPartialTicks()))
-                .translateBack(.5F, 1 + 7 / 16F, .5F);
+                .rotateZRadians(lerp(firstArmAnimationAngle[0], firstArmRotation[0], AnimationTickHolder.getPartialTicks()))
+                .translateBack(arm1pivot);
         arm.setTransform((MatrixStack) ts);
 
         ts.pushPose();
-        ts.translate(0, 0, -(1 + 12 / 16F))
-                .translate(.5, 1 + 7 / 16F, .5).
-                rotateXRadians(lerp(secondArmAnimationAngle[0], secondArmRotation[0], AnimationTickHolder.getPartialTicks()))
-                .translateBack(.5, 1 + 7 / 16F, .5);
+
+        var arm2pivot = new Vec3d( 0.5, 2 , 0.5);
+        ts.translate(2, 0, 0)
+                .translate(arm2pivot)
+                .rotateZRadians(lerp(secondArmAnimationAngle[0], secondArmRotation[0], AnimationTickHolder.getPartialTicks()))
+                .translateBack(arm2pivot);
 
         arm2.setTransform((MatrixStack) ts);
 
         ts.pushPose();
-        ts.translate(0, 0, -(1 + 13 / 16F)).
-                translate(0.5F, 1 + 8 / 16F, 0.5F)
-                .rotateXRadians(lerp(handRotationAnimationAngle[0], handRotation[0], AnimationTickHolder.getPartialTicks()))
+
+        var hand2pivot = new Vec3d( 4 + 3/16f, 2  , 0.5);
+        ts.translate(-2, 0, 0).
+                translate(hand2pivot)
+                .rotateZRadians(lerp(handRotationAnimationAngle[0], handRotation[0], AnimationTickHolder.getPartialTicks()))
                 .rotateYRadians(lerp(handRotationAnimationAngle[1], handRotation[1], AnimationTickHolder.getPartialTicks()))
-                .translateBack(0.5F, 1 + 5 / 16F, 0.5F);
+                .translateBack(hand2pivot);
         hand.setTransform((MatrixStack) ts);
 
         ts.pushPose();
-        ts.translate(0, 2 / 16F, -0.5F);
+        ts.translate(0, 0, 0);
         claw.setTransform((MatrixStack) ts);
 
         ts.popPose();
         ts.popPose();
         ts.popPose();
         ts.popPose();
-
-        arm.translate(-0.5, -0.5, -0.5);
-        arm2.translate(-0.5, -0.5, -0.5);
-        hand.translate(-0.5, -0.5, -0.5);
-        claw.translate(-0.5, -0.5, -0.5);
-
     }
 
     private float lerp(float previous, float current, float partialTick) {

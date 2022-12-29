@@ -163,6 +163,9 @@ public abstract class AbstractArmEntity extends BlockEntity {
                 if (!entities.isEmpty()) {
                     targeting.setTarget(entities.get(0).getBlockPos(), Direction.UP);
                 }
+                if (targeting == null) {
+                    return;
+                }
                 ActionResult result = motorCortex.move(armPoint, targeting.getTargetVec(), targeting.getTargetFacing());
                 if (result == ActionResult.SUCCESS) {
                     if (!entities.isEmpty()) {

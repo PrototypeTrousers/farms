@@ -5,6 +5,7 @@ import de.javagl.obj.Obj;
 import de.javagl.obj.ObjFace;
 import de.javagl.obj.ObjReader;
 import de.javagl.obj.ObjSplitting;
+import mechanicalarms.client.model.loader.myron.impl.client.model.MyronBakedModel;
 import mechanicalarms.client.model.loader.myron.impl.client.model.MyronMaterial;
 import mechanicalarms.client.model.loader.myron.impl.client.obj.MaterialReader;
 import mechanicalarms.client.model.loader.myron.impl.client.obj.ObjLoader;
@@ -19,7 +20,6 @@ import net.fabricmc.fabric.api.renderer.v1.mesh.MeshBuilder;
 import net.fabricmc.fabric.api.renderer.v1.mesh.MutableQuadView;
 import net.fabricmc.fabric.api.renderer.v1.mesh.QuadEmitter;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.render.model.ModelBakeSettings;
 import net.minecraft.client.texture.Sprite;
 import net.minecraft.client.texture.SpriteAtlasTexture;
@@ -28,6 +28,7 @@ import net.minecraft.resource.Resource;
 import net.minecraft.resource.ResourceManager;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.AffineTransformation;
+import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
@@ -37,10 +38,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
@@ -50,7 +53,7 @@ public class Myron implements ClientModInitializer {
     public static final String MOD_ID = "myron";
     public static final Logger LOGGER = LogManager.getLogger("Myron");
     public static final Map<Identifier, Mesh> MESHES = new HashMap<>();
-    public static final Map<Identifier, BakedModel> BAKED_MODEL_MAP = new HashMap<>();
+    public static final Map<Identifier, MyronBakedModel> BAKED_MODEL_MAP = new HashMap<>();
     private final static Vector3f NONE = new Vector3f();
     private final static Vector3f BLOCKS = new Vector3f(0.5F, 0.5F, 0.5F);
 
@@ -286,6 +289,35 @@ public class Myron implements ClientModInitializer {
         return new Vector3f(tuple.getX(), tuple.getY(), tuple.getZ());
     }
 
+    public static Map<String, Mesh> buildMeshArray(Obj obj, Map<String, MyronMaterial> materials, Function<SpriteIdentifier, Sprite> textureGetter, ModelBakeSettings bakeSettings, boolean isBlock) {
+        Renderer renderer = RendererAccess.INSTANCE.getRenderer();
+
+        if (renderer == null) return new HashMap<>();
+
+        MeshBuilder builder = renderer.meshBuilder();
+        QuadEmitter emitter = builder.getEmitter();
+        Map<String, Mesh> meshes = new HashMap<>();
+
+        for (Map.Entry<String, Obj> entry : ObjSplitting.splitByGroups(obj).entrySet()) {
+            Obj group = entry.getValue();
+            MyronMaterial material = materials.get(entry.getKey());
+
+            if (material == null) {
+                material = MyronMaterial.DEFAULT;
+            }
+
+            int materialColor = material.getColor();
+            Sprite sprite = textureGetter.apply(new SpriteIdentifier(SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE, material.getTexture()));
+
+            for (int faceIndex = 0; faceIndex < group.getNumFaces(); ++faceIndex) {
+                face(renderer, emitter, group, group.getFace(faceIndex), material, materialColor, sprite, bakeSettings, isBlock);
+            }
+            meshes.put(entry.getKey(),builder.build());
+        }
+
+        return meshes;
+    }
+
     @Override
     public void onInitializeClient() {
         ModelLoadingRegistry.INSTANCE.registerResourceProvider(ObjLoader::new);
@@ -301,7 +333,7 @@ public class Myron implements ClientModInitializer {
             for (Identifier id : candidates.keySet()) {
                 if (id.getPath().endsWith(".obj")) {
                     ids.add(id);
-                    ids.add(new Identifier(id.getNamespace(), id.getPath().substring(0, id.getPath().indexOf(".obj"))));
+                    //ids.add(new Identifier(id.getNamespace(), id.getPath().substring(0, id.getPath().indexOf(".obj"))));
                 } else {
                     Identifier test = new Identifier(id.getNamespace(), id.getPath() + ".obj");
 
@@ -317,9 +349,9 @@ public class Myron implements ClientModInitializer {
 
                         if (path.startsWith("models/")) {
                             out.accept(new Identifier(id.getNamespace(), path.substring("models/".length())));
+                        } else {
+                            out.accept(id);
                         }
-
-                        out.accept(id);
                     }
             );
         });

@@ -1,4 +1,3 @@
 {
-  "parent": "minecraft:block/block",
-  "model": "mechanicalarms:block/arm_basic"
+  "model": "mechanicalarms:item/arm_basic.obj"
 }
