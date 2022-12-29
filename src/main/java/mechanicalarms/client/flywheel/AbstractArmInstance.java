@@ -13,10 +13,7 @@ import com.jozufozu.flywheel.util.transform.TransformStack;
 import mechanicalarms.Myron;
 import mechanicalarms.client.model.loader.myron.impl.client.model.MyronBakedModel;
 import mechanicalarms.common.tile.AbstractArmEntity;
-import net.fabricmc.fabric.api.renderer.v1.mesh.QuadView;
-import net.fabricmc.fabric.impl.client.indigo.renderer.mesh.QuadViewImpl;
 import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.model.BakedModel;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Vec3d;
@@ -104,9 +101,9 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
         TransformStack ts = TransformStack.cast(matrixStack);
         ts.pushPose();
 
-        ts.translate(0,-0.5,0);
+        ts.translate(0, -0.5, 0);
 
-        var arm1pivot = new Vec3d(0.5,2,0.5);
+        var arm1pivot = new Vec3d(0.5, 2, 0.5);
         ts.translate(getInstancePosition())
                 .translate(arm1pivot)
                 .rotateYRadians(lerp(firstArmAnimationAngle[1], firstArmRotation[1], AnimationTickHolder.getPartialTicks()))
@@ -116,7 +113,7 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
 
         ts.pushPose();
 
-        var arm2pivot = new Vec3d( 0.5, 2 , 0.5);
+        var arm2pivot = new Vec3d(0.5, 2, 0.5);
         ts.translate(2, 0, 0)
                 .translate(arm2pivot)
                 .rotateZRadians(lerp(secondArmAnimationAngle[0], secondArmRotation[0], AnimationTickHolder.getPartialTicks()))
@@ -126,7 +123,7 @@ public abstract class AbstractArmInstance extends BlockEntityInstance<AbstractAr
 
         ts.pushPose();
 
-        var hand2pivot = new Vec3d( 4 + 3/16f, 2  , 0.5);
+        var hand2pivot = new Vec3d(4 + 3 / 16f, 2, 0.5);
         ts.translate(-2, 0, 0).
                 translate(hand2pivot)
                 .rotateZRadians(lerp(handRotationAnimationAngle[0], handRotation[0], AnimationTickHolder.getPartialTicks()))

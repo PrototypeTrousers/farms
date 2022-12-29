@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "mechanicalarms:block/arm_base.obj"
+      "model": "mechanicalarms:block/arm_basic.obj_base"
     }
   }
 }

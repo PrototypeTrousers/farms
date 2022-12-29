@@ -88,8 +88,8 @@ public abstract class AbstractArmEntity extends BlockEntity {
         super.setWorld(world);
     }
 
-    public ActionResult interact(Action action, Pair<BlockPos, Direction> blkFace) {
-        BlockEntity te = world.getBlockEntity(blkFace.getKey());
+    public ActionResult interact(Action action, Pair<Vec3d, Direction> blkFace) {
+        BlockEntity te = world.getBlockEntity(new BlockPos(blkFace.getKey()));
         /*if (te != null) {
             IItemHandler itemHandler = te.getCapability(CapabilityItemHandler.ITEM_HANDLER_CAPABILITY, blkFace.getRight());
             if (itemHandler != null) {
@@ -161,7 +161,7 @@ public abstract class AbstractArmEntity extends BlockEntity {
             case ENTITY -> {
                 List<Entity> entities = this.getWorld().getNonSpectatingEntities(Entity.class, new Box(this.pos.east(4).south(4).up(4), this.pos.north(4).west(4).down(3)));
                 if (!entities.isEmpty()) {
-                    targeting.setTarget(entities.get(0).getBlockPos(), Direction.UP);
+                    setTarget(entities.get(0).getPos(), Direction.UP);
                 }
                 if (targeting == null) {
                     return;
@@ -196,12 +196,12 @@ public abstract class AbstractArmEntity extends BlockEntity {
         return workStatus;
     }
 
-    public void setSource(BlockPos sourcePos, Direction sourceFacing) {
+    public void setSource(Vec3d sourcePos, Direction sourceFacing) {
         targeting.setSource(sourcePos, sourceFacing);
         markDirty();
     }
 
-    public void setTarget(BlockPos targetPos, Direction targetFacing) {
+    public void setTarget(Vec3d targetPos, Direction targetFacing) {
         targeting.setTarget(targetPos, targetFacing);
         markDirty();
     }
