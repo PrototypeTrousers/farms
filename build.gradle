@@ -39,6 +39,7 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 	implementation("de.javagl:obj:0.3.0")
 	modImplementation(files("libs/flywheel-fabric-1.19.3-0.6.9.jar"))
+	modImplementation(files("libs/starlight-1.1.1+fabric.06e506c.jar"))
 }
 
 processResources {

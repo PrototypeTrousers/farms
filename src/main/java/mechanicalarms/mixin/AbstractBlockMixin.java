@@ -20,9 +20,9 @@ public abstract class AbstractBlockMixin {
 
     @Inject(
             method = "initShapeCache",  // the jvm bytecode signature for the constructor
-            at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;hasDynamicBounds()Z", by = 1,shift = At.Shift.AFTER
+            at = @At(value = "INVOKE", target = "Lnet/minecraft/block/Block;hasDynamicBounds()Z", by = 2,shift = At.Shift.AFTER
             ), cancellable = true)
-    protected void a(CallbackInfo ci) {
+    protected void initShapeCacheAsync(CallbackInfo ci) {
         sc = CompletableFuture.supplyAsync(() -> new AbstractBlock.AbstractBlockState.ShapeCache(this.asBlockState())).thenAcceptAsync(as -> this.shapeCache = as);
         ci.cancel();
     }

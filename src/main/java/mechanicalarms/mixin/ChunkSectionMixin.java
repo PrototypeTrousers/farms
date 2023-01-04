@@ -26,14 +26,6 @@ public class ChunkSectionMixin {
 
     }
 
-    @Inject(method = "setBlockState(IIILnet/minecraft/block/BlockState;Z)Lnet/minecraft/block/BlockState;", at = @At(value = "HEAD"))
-    private void init1(int x, int y, int z, BlockState state, boolean lock, CallbackInfoReturnable<BlockState> cir) {
-        if (!initialized) {
-            initialized = true;
-            calculateCounts();
-        }
-    }
-
     @Inject(method = "toPacket", at =@At("HEAD"))
     private void initPacket(PacketByteBuf buf, CallbackInfo ci){
         if (!initialized) {
