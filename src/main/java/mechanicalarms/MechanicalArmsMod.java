@@ -1,9 +1,11 @@
 package mechanicalarms;
 
+import mechanicalarms.common.block.BlockBelt;
 import mechanicalarms.common.block.BlockArmShearer;
 import mechanicalarms.common.block.BlockBasicArm;
 import mechanicalarms.common.tile.ArmEntityBasic;
 import mechanicalarms.common.tile.ArmEntityShearer;
+import mechanicalarms.common.tile.BeltEntity;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -25,6 +27,8 @@ public class MechanicalArmsMod implements ModInitializer {
     // an instance of our new item
     public static final Block BLOCK_BASIC_ARM = new BlockBasicArm();
     public static final Block BLOCK_ARM_SHEARER = new BlockArmShearer();
+    public static final Block BLOCK_BELT = new BlockBelt();
+
     public static final BlockEntityType<ArmEntityBasic> ARM_BASIC_ENTITY = Registry.register(
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("mechanicalarms", "arm_basic_entity"),
@@ -35,6 +39,12 @@ public class MechanicalArmsMod implements ModInitializer {
             Registries.BLOCK_ENTITY_TYPE,
             new Identifier("mechanicalarms", "arm_shearer_entity"),
             FabricBlockEntityTypeBuilder.create(ArmEntityShearer::new, BLOCK_ARM_SHEARER).build()
+    );
+
+    public static final BlockEntityType<BeltEntity> BELT_ENTITY = Registry.register(
+            Registries.BLOCK_ENTITY_TYPE,
+            new Identifier("mechanicalarms", "belt_entity"),
+            FabricBlockEntityTypeBuilder.create(BeltEntity::new, BLOCK_BELT).build()
     );
 
     @Override
@@ -48,5 +58,7 @@ public class MechanicalArmsMod implements ModInitializer {
         Registry.register(Registries.ITEM, new Identifier("mechanicalarms", "arm_basic"), new BlockItem(BLOCK_BASIC_ARM, new FabricItemSettings()));
         Registry.register(Registries.BLOCK, new Identifier("mechanicalarms", "arm_shearer"), BLOCK_ARM_SHEARER);
         Registry.register(Registries.ITEM, new Identifier("mechanicalarms", "arm_shearer"), new BlockItem(BLOCK_ARM_SHEARER, new FabricItemSettings()));
+        Registry.register(Registries.BLOCK, new Identifier("mechanicalarms", "belt"), BLOCK_BELT);
+        Registry.register(Registries.ITEM, new Identifier("mechanicalarms", "belt"), new BlockItem(BLOCK_BELT, new FabricItemSettings()));
     }
 }

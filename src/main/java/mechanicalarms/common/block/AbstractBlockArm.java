@@ -25,7 +25,4 @@ public abstract class AbstractBlockArm extends BlockWithEntity {
     @Nullable
     @Override
     public abstract BlockEntity createBlockEntity(BlockPos pos, BlockState state);
-
-    @Override
-    public abstract <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type);
 }
