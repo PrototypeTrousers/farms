@@ -19,32 +19,36 @@ public class BeltEntity extends BlockEntity {
     }
 
     public void update() {
-        List<Entity> entities = this.getWorld().getNonSpectatingEntities(Entity.class, new Box(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() +1, pos.getZ() + 1));
+        List<Entity> entities = this.getWorld().getNonSpectatingEntities(Entity.class, new Box(pos.getX(), pos.getY(), pos.getZ(), pos.getX() + 1, pos.getY() + 0.5, pos.getZ() + 1));
         for (Entity e : entities) {
             if (e.isAlive()) {
                 double xCenter = pos.getX() + 0.5f;
                 double zCenter = pos.getZ() + 0.5f;
 
-                double diffx = 0;
-                double diffz = 0;
+                double diffx;
+                double diffz;
 
-                if (e.getX() - xCenter > 0.1/16f) {
-                    diffx = -1/16f;
+                if (e.getX() - xCenter > 0.1) {
+                    diffx = -1 / 16f;
+                } else if (e.getX() - xCenter < -0.1) {
+                    diffx = 1 / 16f;
                 } else {
-                    diffx = 1/16f;
+                    diffx = 0;
                 }
 
-                if (e.getZ() - zCenter > 0.1/16f) {
-                    diffz = -1/16f;
+                if (e.getZ() - zCenter > 0.1) {
+                    diffz = -1 / 16f;
+                } else if (e.getZ() - zCenter < -0.1) {
+                    diffz = 1 / 16f;
                 } else {
-                    diffz = 1/16f;
+                    diffz = 0;
                 }
 
                 switch (world.getBlockState(this.pos).get(Properties.HORIZONTAL_FACING)) {
-                    case NORTH -> e.move(MovementType.SELF, new Vec3d(diffx,0, - 0.025));
-                    case SOUTH -> e.move(MovementType.SELF, new Vec3d(diffx,0, + 0.025));
-                    case WEST -> e.move(MovementType.SELF, new Vec3d(+ 0.025, 0, diffz));
-                    case EAST -> e.move(MovementType.SELF, new Vec3d( - 0.025, 0, diffz));
+                    case NORTH -> e.move(MovementType.SELF, new Vec3d(diffx, 0, -0.05));
+                    case SOUTH -> e.move(MovementType.SELF, new Vec3d(diffx, 0, +0.05));
+                    case WEST -> e.move(MovementType.SELF, new Vec3d(+0.05, 0, diffz));
+                    case EAST -> e.move(MovementType.SELF, new Vec3d(-0.05, 0, diffz));
                 }
                 e.setOnGround(true);
             }
@@ -53,7 +57,7 @@ public class BeltEntity extends BlockEntity {
 
     public static void tick(World world, BlockPos pos, BlockState state, BeltEntity blockEntity) {
         if (world.isClient()) {
-            return;
+            //return;
         }
         blockEntity.update();
     }
